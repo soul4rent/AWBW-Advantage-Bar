@@ -57,7 +57,6 @@ if __name__=='__main__':
     windowHeight = 200
     root.geometry(f'{windowWidth}x{windowHeight}') # window size
 
-    # root window title and dimension
     root.title("Advantage Bar")
     lbl = Label(root, text=f"100 | 100")
     lbl.pack()
@@ -80,12 +79,8 @@ if __name__=='__main__':
         lbl.config(text=f"{int(unit_values[0].text)} | {int(total_points_p1)} || {int(unit_values[1].text)} | {int(total_points_p2)}")
 
         canvas.coords(blue, 50, 50, 50 + int((.5)*(total_points_p1/total_points_p2) * bar_width), 50 + bar_height)
-
         root.after(1000, update_s4r_formula)
 
     root.after(1000, update_s4r_formula)
-    # all widgets will be here
-    # Execute Tkinter
-    print("running tkinter")
     root.mainloop()
 
