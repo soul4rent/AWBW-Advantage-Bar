@@ -49,7 +49,7 @@ def get_game_values(game_values_url):
     return html_unit_values, html_power_charges_current, html_power_charges_max, tower_values, html_player_cos, html_names
 
 if __name__=='__main__':
-    url = "https://awbw.amarriner.com/game.php?games_id=1465440"
+    url = input("game url:") #ex: "https://awbw.amarriner.com/game.php?games_id=1465440"
     html = get_html_from_url(url)
 
     # create root window
@@ -66,10 +66,14 @@ if __name__=='__main__':
     canvas.pack()
 
     lbl_p1 = canvas.create_text(50, 40, text="P1", anchor="w")
-    lbl_value_p1 = canvas.create_text(50, 110, text="P1 Value", anchor="w")
+    lbl_vbss_p1 = canvas.create_text(50, 110, text="P1 VBSS", anchor="w")
+    #lbl_value_p1 = canvas.create_text(50, 120, text="P1 value", anchor="w")
+
     lbl_p2 = canvas.create_text(50+bar_width, 40, text="P2", anchor="e")
-    lbl_value_p2 = canvas.create_text(50+bar_width, 110, text="P2 Value", anchor="e")
-    red = canvas.create_rectangle(50, 50, 50 + bar_width, 50 + bar_height, fill='red')
+    lbl_vbss_p2 = canvas.create_text(50 + bar_width, 110, text="P2 VBSS", anchor="e")
+    #lbl_value_p2 = canvas.create_text(50 + bar_width, 120, text="P2 value", anchor="e")
+
+    red = canvas.create_rectangle(50, 50, 50 + bar_width, 50 + bar_height, fill='dark red')
     blue = canvas.create_rectangle(50, 50, 50 + .5 * bar_width, 50 + bar_height, fill='blue')
     center = canvas.create_rectangle(50+.499*bar_width, 50, 50 + .501 * bar_width, 50 + bar_height, fill='black')
 
@@ -82,17 +86,19 @@ if __name__=='__main__':
         total_points_p1 = get_s4r_formula_result(player_cos[0], int(unit_values[0].text), int(power_charges_current[0].text), int(power_charges_max[0].text), tower_values[0])
         total_points_p2 = get_s4r_formula_result(player_cos[1], int(unit_values[1].text), int(power_charges_current[1].text), int(power_charges_max[1].text), tower_values[1])
 
-        # inner_text = f"{int(unit_values[0].text)} | {int(total_points_p1)} || {int(unit_values[1].text)} | {int(total_points_p2)}"
         inner_text_p1 = f"{player_names[0]["title"]} ({player_cos[0]})"
-        inner_text_p1_value = f"{int(unit_values[0].text)} | {int(total_points_p1)}"
+        inner_text_p1_vbss = f"VBSS: {int(total_points_p1)}"
         inner_text_p2 = f"{player_names[1]["title"]} ({player_cos[1]})"
-        inner_text_p2_value = f"{int(unit_values[1].text)} | {int(total_points_p2)}"
-
+        inner_text_p2_vbss = f"VBSS: {int(total_points_p2)}"
 
         canvas.itemconfig(lbl_p1, text=inner_text_p1)
-        canvas.itemconfig(lbl_value_p1, text=inner_text_p1_value)
+        canvas.itemconfig(lbl_vbss_p1, text=inner_text_p1_vbss)
+        #canvas.itemconfig(lbl_value_p1, text=f"🪙: {int(unit_values[0].text)}")
+
         canvas.itemconfig(lbl_p2, text=inner_text_p2)
-        canvas.itemconfig(lbl_value_p2, text=inner_text_p2_value)
+        canvas.itemconfig(lbl_vbss_p2, text=inner_text_p2_vbss)
+        #canvas.itemconfig(lbl_value_p2, text=f"🪙: {int(unit_values[1].text)}")
+
 
         canvas.coords(blue, 50, 50, 50 + int((.5)*(total_points_p1/total_points_p2) * bar_width), 50 + bar_height)
         root.after(1000, update_s4r_formula)
